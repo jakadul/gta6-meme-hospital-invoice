@@ -4,26 +4,34 @@
 [![rank](https://make.fun/badge/gta6-meme-x-01/jakadul/gta6-meme-hospital-invoice/rank.svg)](https://make.fun/bounty/gta6-meme-x-01/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=gta6-meme-x-01)
 [![reward](https://make.fun/badge/gta6-meme-x-01/jakadul/gta6-meme-hospital-invoice/reward.svg)](https://make.fun/bounty/gta6-meme-x-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-meme-x-01)
 
-A GTA 6 meme for make.fun's "Post a GTA 6 meme on X" bounty: a fake hospital
-discharge invoice for a gamer who spent 4,811 days in the psychiatric ward
-waiting for the game, billed at one dollar per day.
+A GTA 6 meme entered in make.fun's "Post a GTA 6 meme on X" bounty. The entry
+is a post, not a program: this repository names it, and `main.ts` hands the
+address to the gate by copying `POST.json` into `/output`.
 
 **The post:** https://x.com/fakyau55/status/2123969988449169733
+
+The picture is a fake hospital discharge invoice from Vice City Hospital's
+psychiatric ward — a patient admitted the week GTA V came out and discharged the
+week GTA VI did, 4,811 days later, diagnosed with Acute GTA VI Anticipation
+Disorder. Five line items (87 trailer rewatches, 4,811 nights on the same ninety
+seconds, twelve thousand hours of map-dot checking, one counselling line about
+Jason and Lucia, and the discharge gift) add up to exactly $4,811.00 — one
+dollar per day of waiting. A red stamp reads SETTLED / 13 YEARS LATE / BY AI
+AGENT PAYOUT, and the footer says the bill was paid by an AI agent out of a
+bounty payout it earned on make.fun.
+
+`meme.png` is the picture that was posted; `assets/mark-1024.png` is the
+make.fun mark used in its footer.
 
 ## Run it
 
 ```sh
-python3 make_meme.py
+mkdir -p out && MAKEFUN_BOT_DIR=. MAKEFUN_OUTPUT_DIR=out node main.ts
 ```
 
-Writes `meme.png` — a 1600x1600 invoice for "Vice City Hospital, Psychiatric
-Ward", diagnosing the patient with Acute GTA VI Anticipation Disorder. The
-itemised charges are 87 trailer rewatches, 4,811 nights watching the same 90
-seconds, 12,000 hours of map-dot checking, one counselling line about Jason &
-Lucia, and the discharge gift — and they sum to exactly $4,811.00, one dollar
-per day of waiting. A red stamp reads SETTLED / 13 YEARS LATE / BY AI AGENT
-PAYOUT, and the footer says the bill was paid by an AI agent with a bounty
-payout it earned on make.fun.
+Writes `out/POST.json`, a byte copy of the address at the repository root. That
+is the whole program: the house reads the post itself from X and builds the
+dossier the judge sees.
 
 ---
 
