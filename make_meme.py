@@ -1,6 +1,10 @@
-"""GTA6 meme v11 — Vice City Hospital invoice, SQUARE, MEME-FIRST.
-Rank-1 lesson: 5 big items, one huge TOTAL, one dominant stamp, huge type.
-Everything readable at 400px feed size. Itemised sum = $4,811.00.
+"""make_meme.py — GTA6 meme v11 renderer: Vice City Hospital invoice, SQUARE, MEME-FIRST.
+
+Draws a 1600x1600 fake hospital invoice for the GTA VI wait: a Vice City sunset
+skyline background, cream invoice paper, black header band with a red-cross icon,
+ADMITTED / DISCHARGED / DAYS WAITING 4,811 fields, 5 itemised rows summing to
+exactly $4,811.00, a dominant TOTAL DUE, a red SETTLED stamp, a ghost mascot with
+a magenta star badge, and a magenta footer with the make.fun pill.
 """
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 import math, random, os
@@ -28,41 +32,53 @@ ITEMS = [
 TOTAL = sum(i[2] for i in ITEMS)
 assert abs(TOTAL - 4811.00) < 0.001
 
+# ---------- reusable sunset background ----------
+def paint_sunset(img, stops, sun):
+    """Paint the Vice City sunset sky gradient, glow, sun, skyline and palms.
+
+    Mutates `img` in place with identical pixels to the original inline loop.
+    Returns the ImageDraw bound to the painted result (post alpha-composite).
+    """
+    bd = ImageDraw.Draw(img)
+    for y in range(H):
+        t = y / H
+        c = stops[-1][1]
+        for i in range(len(stops) - 1):
+            a0, c0 = stops[i]; b0, c1 = stops[i + 1]
+            if a0 <= t <= b0:
+                f = (t - a0) / (b0 - a0)
+                c = tuple(int(c0[j] + (c1[j] - c0[j]) * f) for j in range(3)); break
+        bd.line([(0, y), (W, y)], fill=c)
+    sx, sy = sun
+    for r, al in ((540, 26), (400, 34), (300, 44), (210, 58)):
+        gl = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+        ImageDraw.Draw(gl).ellipse([sx - r, sy - r, sx + r, sy + r], fill=(255, 228, 152, al))
+        img = Image.alpha_composite(img.convert('RGBA'), gl.filter(ImageFilter.GaussianBlur(46))).convert('RGB')
+    bd = ImageDraw.Draw(img)
+    bd.ellipse([sx - 190, sy - 190, sx + 190, sy + 190], fill=(255, 238, 180))
+    random.seed(9); base = int(H * 0.955); x = 0
+    while x < W:
+        bw = random.randint(56, 126); bh = random.randint(80, 230)
+        bd.rectangle([x, base - bh, x + bw, base], fill=(46, 16, 52))
+        x += bw + random.randint(5, 17)
+    bd.rectangle([0, base, W, H], fill=(34, 12, 40))
+    def palm(cx, by, s=1.0, col=(34, 12, 40)):
+        bd.rectangle([cx - 4 * s, by - 220 * s, cx + 4 * s, by], fill=col)
+        for ang in (-1.35, -0.95, -0.45, 0.45, 0.95, 1.35, 0):
+            L = 110 * s
+            ex, ey = cx + math.sin(ang) * L, by - 220 * s - math.cos(ang) * L * 0.55
+            mx, my = cx + math.sin(ang) * L * 0.6, by - 220 * s - math.cos(ang) * L * 0.75
+            bd.line([(cx, by - 220 * s), (mx, my), (ex, ey)], fill=col, width=int(7 * s), joint='curve')
+    for px_, ps in ((160, 1.2), (1450, 1.05)): palm(px_, base + 46, ps)
+    return img
+
 # ---------- bg ----------
-bg = Image.new('RGB', (W, H)); bd = ImageDraw.Draw(bg)
+bg = Image.new('RGB', (W, H))
 stops = [(0.00, (22, 10, 44)), (0.18, (78, 16, 88)), (0.38, (158, 28, 106)),
          (0.56, (216, 62, 96)), (0.72, (246, 124, 74)), (0.88, (255, 178, 86)),
          (1.00, (255, 216, 132))]
-for y in range(H):
-    t = y / H
-    c = stops[-1][1]
-    for i in range(len(stops) - 1):
-        a0, c0 = stops[i]; b0, c1 = stops[i + 1]
-        if a0 <= t <= b0:
-            f = (t - a0) / (b0 - a0)
-            c = tuple(int(c0[j] + (c1[j] - c0[j]) * f) for j in range(3)); break
-    bd.line([(0, y), (W, y)], fill=c)
-sx, sy = W // 2, int(H * 0.82)
-for r, al in ((540, 26), (400, 34), (300, 44), (210, 58)):
-    gl = Image.new('RGBA', (W, H), (0, 0, 0, 0))
-    ImageDraw.Draw(gl).ellipse([sx - r, sy - r, sx + r, sy + r], fill=(255, 228, 152, al))
-    bg = Image.alpha_composite(bg.convert('RGBA'), gl.filter(ImageFilter.GaussianBlur(46))).convert('RGB')
-bd = ImageDraw.Draw(bg)
-bd.ellipse([sx - 190, sy - 190, sx + 190, sy + 190], fill=(255, 238, 180))
-random.seed(9); base = int(H * 0.955); x = 0
-while x < W:
-    bw = random.randint(56, 126); bh = random.randint(80, 230)
-    bd.rectangle([x, base - bh, x + bw, base], fill=(46, 16, 52))
-    x += bw + random.randint(5, 17)
-bd.rectangle([0, base, W, H], fill=(34, 12, 40))
-def palm(cx, by, s=1.0, col=(34, 12, 40)):
-    bd.rectangle([cx - 4 * s, by - 220 * s, cx + 4 * s, by], fill=col)
-    for ang in (-1.35, -0.95, -0.45, 0.45, 0.95, 1.35, 0):
-        L = 110 * s
-        ex, ey = cx + math.sin(ang) * L, by - 220 * s - math.cos(ang) * L * 0.55
-        mx, my = cx + math.sin(ang) * L * 0.6, by - 220 * s - math.cos(ang) * L * 0.75
-        bd.line([(cx, by - 220 * s), (mx, my), (ex, ey)], fill=col, width=int(7 * s), joint='curve')
-for px_, ps in ((160, 1.2), (1450, 1.05)): palm(px_, base + 46, ps)
+sun = (W // 2, int(H * 0.82))
+bg = paint_sunset(bg, stops, sun)
 
 img = bg.convert('RGBA')
 sh = Image.new('RGBA', (W, H), (0, 0, 0, 0))
@@ -112,7 +128,7 @@ rule(404)
 d.text((M, 424), "ACUTE GTA VI ANTICIPATION DISORDER", font=ft(SB, 44), fill=INK)
 rule(492)
 
-# ---------- ITEMS (6 rows, BIG) ----------
+# ---------- ITEMS (5 rows, BIG) ----------
 yy = 512
 for name, qty, amt in ITEMS:
     d.text((M, yy), name, font=ft(SB, 40), fill=INK)
@@ -189,6 +205,10 @@ d.rounded_rectangle([px, py, px + pw, py + ph], radius=26, fill=(255, 255, 255))
 tw = d.textlength("make.fun", font=ft(SB, 29))
 d.text((px + (pw - tw) / 2, py + 9), "make.fun", font=ft(SB, 29), fill=INK)
 
-out = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'meme.png')
-img.convert('RGB').save(out)
-print("saved", out, os.path.getsize(out), img.size, "| total", f"${TOTAL:,.2f}")
+def save() -> None:
+    out = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'meme.png')
+    img.convert('RGB').save(out)
+    print("saved", out, os.path.getsize(out), img.size, "| total", f"${TOTAL:,.2f}")
+
+if __name__ == "__main__":
+    save()
