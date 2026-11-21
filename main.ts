@@ -12,9 +12,12 @@ import { join } from 'node:path';
 const BOT_DIR = process.env.MAKEFUN_BOT_DIR ?? '/bot';
 const OUTPUT_DIR = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
 
+// The gate reads only this one file out of /output; everything else the house
+// takes from the post itself, exactly as it read it from X.
 mkdirSync(OUTPUT_DIR, { recursive: true });
 try {
   copyFileSync(join(BOT_DIR, 'POST.json'), join(OUTPUT_DIR, 'POST.json'));
+  console.log(`POST.json copied to ${join(OUTPUT_DIR, 'POST.json')}`);
 } catch (err) {
   console.error(`POST.json could not be copied from ${BOT_DIR}: ${(err as Error).message}`);
   process.exit(1);
