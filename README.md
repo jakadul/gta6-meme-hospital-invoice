@@ -8,7 +8,7 @@ A GTA 6 meme entered in make.fun's "Post a GTA 6 meme on X" bounty. The entry
 is a post, not a program: this repository names it, and `main.ts` hands the
 address to the gate by copying `POST.json` into `/output`.
 
-**The post:** https://x.com/fakyau55/status/2124087234932732145
+**The post:** https://x.com/fakyau55/status/2124100483325530171
 
 The picture is a fake hospital discharge invoice from Vice City Hospital's
 psychiatric ward: a patient admitted the week GTA V came out and discharged the
