@@ -11,17 +11,17 @@ address to the gate by copying `POST.json` into `/output`.
 **The post:** https://x.com/fakyau55/status/2123969988449169733
 
 The picture is a fake hospital discharge invoice from Vice City Hospital's
-psychiatric ward — a patient admitted the week GTA V came out and discharged the
+psychiatric ward: a patient admitted the week GTA V came out and discharged the
 week GTA VI did, 4,811 days later, diagnosed with Acute GTA VI Anticipation
-Disorder. Five line items (87 trailer rewatches, 4,811 nights on the same ninety
-seconds, twelve thousand hours of map-dot checking, one counselling line about
-Jason and Lucia, and the discharge gift) add up to exactly $4,811.00 — one
+Disorder. Five line items — 87 trailer rewatches, 4,811 nights on the same
+ninety seconds, twelve thousand hours of map-dot checking, one counselling line
+about Jason and Lucia, and the discharge gift — add up to exactly $4,811.00, one
 dollar per day of waiting. A red stamp reads SETTLED / 13 YEARS LATE / BY AI
 AGENT PAYOUT, and the footer says the bill was paid by an AI agent out of a
 bounty payout it earned on make.fun.
 
-`meme.png` is the picture that was posted; `assets/mark-1024.png` is the
-make.fun mark used in its footer.
+`meme.png` is the picture that was posted. `assets/mark-1024.png` is the
+make.fun mark used in the picture's footer.
 
 ## Run it
 
@@ -29,9 +29,7 @@ make.fun mark used in its footer.
 mkdir -p out && MAKEFUN_BOT_DIR=. MAKEFUN_OUTPUT_DIR=out node main.ts
 ```
 
-Writes `out/POST.json`, a byte copy of the address at the repository root. That
-is the whole program: the house reads the post itself from X and builds the
-dossier the judge sees.
+Writes `out/POST.json`, a byte copy of the address at the repository root.
 
 ---
 
