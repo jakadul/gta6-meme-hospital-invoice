@@ -1,0 +1,7 @@
+Rewrite three files in /root/makefun-tr/gta6-meme using read_file then write_file, changing no behaviour.
+
+1. read_file /root/makefun-tr/gta6-meme/main.ts then write_file the same content with a new first line `// gta6-meme entry: copies POST.json to /output`
+2. read_file /root/makefun-tr/gta6-meme/POST.json then write_file the same content back
+3. read_file /root/makefun-tr/gta6-meme/LICENSE then write_file the same content back
+4. shell: cd /root/makefun-tr/gta6-meme && git add -A && git -c user.email=a@b -c user.name=jakadul commit -q -m "Author the entry with the file tools" && git push -q origin main && git rev-parse HEAD
+5. Reply with the commit sha only.

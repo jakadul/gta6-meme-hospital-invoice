@@ -1,3 +1,4 @@
+// gta6-meme entry: copies POST.json to /output
 // A working gta6-meme-x-01 entry (Node 22, standard library only): it copies POST.json from the repository root to
 // /output/POST.json, where the gate reads it. That is all the program has to do. The entry is the post itself: the
 // meme was made and posted on X from a public account, POST.json names the post, and the house reads the post from X
